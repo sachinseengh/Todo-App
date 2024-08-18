@@ -1,0 +1,20 @@
+.counter_btn{
+    background-color: aqua;
+    font-size: 20px;
+    width: 80px;
+    border-radius:10px ;
+    margin-right: 10px;
+    
+}
+.count{
+    font-size: 50px;
+}
+.totalCount{
+    font-size: 150px;
+}
+.reset_btn{
+    width:200px;
+    background-color: rgb(118, 75, 11);
+    height:30px;
+    border-radius: 10px;
+}
