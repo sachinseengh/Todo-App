@@ -1,41 +1,35 @@
+import { useState } from 'react'
 import './todo.css'
+import {BrowserRouter,Link,Route,Routes,useNavigate,useParams} from 'react-router-dom'
+import ErrorComponent from './ErrorComponent';
+import FooterComponent from './FooterComponent';
+import HeaderComponent from './HeaderComponent';
+import LoginComponent from './LoginComponent';
+import LogoutComponent from './LogoutComponent';
+import TodosComponent from './TodosComponent';
+import WelcomeComponent from './WelcomeComponent';
 
 export default function TODO(){
     return(
         <>
-        ToDo Management  Application
-        <LoginComponent></LoginComponent>
-        <WelcomeComponent></WelcomeComponent>
-        </>
-    )
-}
+    <HeaderComponent></HeaderComponent>
+   <BrowserRouter>
+   <Routes>
+    <Route path="/" element={<LoginComponent></LoginComponent>}></Route>
+    <Route path="/login" element={<LoginComponent></LoginComponent>}></Route>
+    <Route path="/todos" element={<TodosComponent></TodosComponent>}></Route>
+    <Route path="/welcome/:username" element={<WelcomeComponent></WelcomeComponent>}></Route>
+    <Route path="/logout" element={<LogoutComponent></LogoutComponent>}></Route>
+    <Route path="*" element={<ErrorComponent></ErrorComponent>}></Route>
 
-function LoginComponent(){
-
-    return(
-            <div className="LoginComponent">
-                <div className="LoginForm">
-                    <div className="username">
-                        <label htmlFor="username">Username : </label>
-                        <input type="text"  name="username" value="sachin"/>
-                    </div>
-                    <div className="password">
-                        <label htmlFor="password">Password : </label>
-                        <input type="password"  name="password"/>
-                    </div>
-
-                    <button type="submit" > Login </button>
-                </div>
-            </div>
-    )
-}
-
-function WelcomeComponent(){
-return(
+   </Routes>
+   </BrowserRouter>
+   <FooterComponent></FooterComponent>
+   </>
     
-<div className="Welcome Component">
-    Welcome Component
-</div>
-
-)
+    )
 }
+
+
+
+
