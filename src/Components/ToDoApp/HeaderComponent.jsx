@@ -1,23 +1,31 @@
-export default function HeaderComponent(){
-    return(
+import { useContext } from 'react'
+import { useAuth } from './security/AuthContext'
+import { Link } from 'react-router-dom';
+
+export default function HeaderComponent() {
+
+    const authContext = useAuth();
+    const authenticated = authContext.isAuthenticated;
+
+
+    return (
         <>
-        <div className="container my-3">
-        <nav class="navbar navbar-expand-md navbar-light bg-light mb-3 p-1">
-          
-            <a class="navbar-brand m-1" href="/">ToDo</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/todos">Todos</a></li>
-                </ul>
+            <div className="container my-3">
+                <nav className="navbar navbar-expand-md navbar-light bg-light mb-3 p-1">
+                    <Link className="navbar-brand m-1" to="/">ToDo</Link>
+                    <div className="collapse navbar-collapse">
+                        <ul className="navbar-nav">
+                            {authenticated && <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>}
+                            {authenticated && <li className="nav-item"><Link className="nav-link" to="/todos">Todos</Link></li>}
+                        </ul>
+                    </div>
+                    <ul className="navbar-nav">
+                        {!authenticated && <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>}
+                        {authenticated && <li className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></li>}
+                    </ul>
+                </nav>
             </div>
-            <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-            </ul>	
-        </nav>
-        </div>
-        <hr />
+            <hr />
         </>
     )
 }
