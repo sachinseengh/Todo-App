@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useAuth } from './security/AuthContext';
 
 export default function LoginComponent(){
+
     const [username,setUsername] = useState("sachin");
     const [password,setPassword] = useState("");
 
@@ -16,6 +17,7 @@ export default function LoginComponent(){
 
     function handleUsername(event){
         setUsername(event.target.value);
+
     }
     function handlePassword(event){
         setPassword(event.target.value);
@@ -28,10 +30,12 @@ export default function LoginComponent(){
             setError(false);
             navigate(`/welcome/${username}`);
             authContext.setAuthenticated(true);
+            authContext.setUsername(username);
     }else{
         setError(true);
       
         authContext.setAuthenticated(false);
+        authContext.setUsername(null);
     }
     }
 

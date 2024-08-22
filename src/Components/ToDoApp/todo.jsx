@@ -9,6 +9,7 @@ import LogoutComponent from './LogoutComponent';
 import TodosComponent from './TodosComponent';
 import WelcomeComponent from './WelcomeComponent';
 import AuthProvider,{useAuth} from './security/AuthContext';
+import ToDoComponent from './ToDoComponent';
 
 
 
@@ -44,6 +45,12 @@ function AuthenticateRoute({children}){
         <AuthenticateRoute>
         <WelcomeComponent></WelcomeComponent>
         </AuthenticateRoute>}></Route>
+
+        <Route path="/todos/:id" element={
+        <AuthenticateRoute>
+        <ToDoComponent></ToDoComponent>
+        </AuthenticateRoute>}></Route>
+
     <Route path="/logout" element={
          <AuthenticateRoute>
         <LogoutComponent></LogoutComponent>

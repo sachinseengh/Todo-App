@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { retrieveTodos,deleteTodo } from "./api/TodoService";
+import { useNavigate } from "react-router-dom";
 
 
 export default function TodosComponent(){
@@ -9,6 +10,7 @@ export default function TodosComponent(){
         
     }
 
+    const navigate = useNavigate();
     const [todos,setTodos] = useState([]);
     const date = new Date();
     const target = new Date(date.getFullYear()+12,date.getMonth(),date.getDay());
@@ -42,6 +44,10 @@ function successMsg(id){
 function failedMsg(id){
     setMessage(`Todo deletion Failed of id = ${id}`);
 }
+
+function handleEdit(id){
+    navigate(`/todos/${id}`);
+}
         
     return(   
     <div className="container">
@@ -51,22 +57,24 @@ function failedMsg(id){
         <table className="table">
             <thead>
                 <tr>
-                <td>id</td>
+              
                 <td>description</td>
                 <td>Done</td>
                 <td>Target</td>
                 <td>Delete</td>
+                <td>Edit</td>
                 </tr>
             </thead>
             <tbody>
                {
                todos.map((todo)=>(
                <tr key={todo.id}>
-               <td>{todo.id}</td>
+               
                <td>{todo.description}</td>
                <td>{todo.done.toString()}</td>
                <td>{todo.targetDate}</td>
                <td><button className="btn btn-danger" onClick={()=>handleDelete(todo.id)}> Delete</button></td>
+               <td><button className="btn btn-success" onClick={()=>handleEdit(todo.id)}> Edit</button></td>
                
                </tr>
                
@@ -75,6 +83,8 @@ function failedMsg(id){
                 
             </tbody>
         </table>
+
+        <button className="btn btn-success" onClick={()=>handleEdit(-1)}>Add New ToDo</button>
     </div>
     )
     }
