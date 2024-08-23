@@ -1,10 +1,12 @@
 import {BrowserRouter,Link,Route,Routes,useNavigate,useParams} from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from './security/AuthContext';
+import { executeBasicAuth } from './api/HelloWorldService';
+import { apiClient } from './api/ApiClient';
 
 export default function LoginComponent(){
 
-    const [username,setUsername] = useState("sachin");
+    const [username,setUsername] = useState("admin");
     const [password,setPassword] = useState("");
 
 
@@ -12,8 +14,6 @@ export default function LoginComponent(){
 
 
     const authContext = useAuth();
-    
-    
 
     function handleUsername(event){
         setUsername(event.target.value);
@@ -24,20 +24,57 @@ export default function LoginComponent(){
     }
     const navigate = useNavigate();
 
-    function authenticate(){
-    if(username === "sachin" && password === "singh"){
+    // function authenticate(){
+    // if(username === "admin" && password === "admins"){
           
-            setError(false);
-            navigate(`/welcome/${username}`);
-            authContext.setAuthenticated(true);
-            authContext.setUsername(username);
-    }else{
-        setError(true);
+    //         setError(false);
+    //         navigate(`/welcome/${username}`);
+    //         authContext.setAuthenticated(true);
+    //         authContext.setUsername(username);
+    // }else{
+    //     setError(true);
       
+    //     authContext.setAuthenticated(false);
+    //     authContext.setUsername(null);
+    // }
+    // }
+
+    async function authenticate(){
+
+        const token = 'Basic '+window.btoa(username + ":"+password);
+
+      try{
+        const response =  await  executeBasicAuth(token)
+        if(response.status == 200){
+
+                setError(false);
+                navigate(`/welcome/${username}`);
+                authContext.setAuthenticated(true); 
+                authContext.setToken(token)
+                authContext.setUsername(username);
+                apiClient.interceptors.request.use(
+                    (config)=>{
+                        console.log("Intercepting");
+                        config.headers.Authorization = token
+                        return config
+                    }
+                )
+
+                
+        }else{
+            setError(true); 
+          
+            authContext.setAuthenticated(false);
+            authContext.setUsername(null);
+            authContext.setToken(null)
+        }
+    }catch(error){
+        setError(true);
         authContext.setAuthenticated(false);
         authContext.setUsername(null);
+        authContext.setToken(null)
     }
-    }
+        }
 
 
 

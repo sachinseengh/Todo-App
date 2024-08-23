@@ -1,14 +1,18 @@
 import {BrowserRouter,Link,Route,Routes,useNavigate,useParams} from 'react-router-dom'
 
 import { useState } from 'react';
-import   {retrieveHelloWorld} from './api/HelloWorldService';
+import   {retrieveHelloWorld,retrieveHelloWorldPathVariable} from './api/HelloWorldService';
 import  {retrieveTodos} from './api/TodoService'
+import   axios from 'axios';
+import { useAuth } from './security/AuthContext';
 
 export default function WelcomeComponent(){
 
     const [message,setMessage] = useState(null);
 
     const params = useParams();
+
+    const authContext = useAuth();
 
 function callHelloWorldAPI(){
     // axios.get('http://localhost:8080/hello-world')
@@ -23,10 +27,11 @@ function callHelloWorldAPI(){
     // .finally(()=>console.log('cleanup'));
 
 
-    //  retrieveHelloWorldPathVariable(params.username)
-    // .then((response)=>successfulResponse(response))
-    // .catch((error)=>errorResponse(error))
-    // .finally(()=>console.log('cleanup'));
+
+     retrieveHelloWorldPathVariable(params.username,authContext.token)
+    .then((response)=>successfulResponse(response))
+    .catch((error)=>errorResponse(error))
+    .finally(()=>console.log('cleanup'));
 
     //doing it from todo component
     // retrieveTodos(params.username)
@@ -38,7 +43,7 @@ function callHelloWorldAPI(){
 function successfulResponse(response){
     console.log('success');
     console.log(response);
-    setMessage(response);
+    setMessage(response.data.message);
     
 }
 function errorResponse(){

@@ -9,6 +9,10 @@ export default function LogoutComponent(){
         <h1>You are logged Out !</h1>
         {
             authContext.setAuthenticated(false)
+           
+        }
+        {
+             authContext.setToken(null)
         }
         </>
     )

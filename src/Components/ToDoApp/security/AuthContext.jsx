@@ -14,9 +14,11 @@ export default function AuthProvider({children}){
     //3.put the state in context
     const [number,setNumber] = useState(100);
 
+    const [token,setToken] = useState(null);
+
     const [isAuthenticated,setAuthenticated] = useState(false);
     return(
-        <AuthContext.Provider value={{isAuthenticated,setAuthenticated,username,setUsername}}>
+        <AuthContext.Provider value={{isAuthenticated,setAuthenticated,username,setUsername,token,setToken}}>
             {children}
         </AuthContext.Provider>
     )

@@ -22,7 +22,7 @@ export default function TodosComponent(){
     )
     
 function refreshToDo(){
-   retrieveTodos('sachin')
+   retrieveTodos('admin')
    .then((response)=>success(response))
    .catch((error)=>console.log(error))
    .finally(console.log("final"))
@@ -30,7 +30,7 @@ function refreshToDo(){
 
 function handleDelete(id){
 
-    deleteTodo('sachin',id)
+    deleteTodo('admin',id)
     .then((response)=>{successMsg(id)})
     .catch((error)=>{failedMsg(id)});
 

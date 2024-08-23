@@ -55,6 +55,7 @@ export default function ToDoComponent(){
         .catch((error)=>console.log(error))
 
         }else{
+            console.log(todo);
         updateTodoApi(username,id,todo)
         .then((response)=>{
             navigate("/todos")
