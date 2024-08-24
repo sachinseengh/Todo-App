@@ -1,7 +1,7 @@
 import {BrowserRouter,Link,Route,Routes,useNavigate,useParams} from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from './security/AuthContext';
-import { executeBasicAuth } from './api/HelloWorldService';
+import { executeBasicAuth, executeJwtAuth } from './api/AuthenticationApiService'
 import { apiClient } from './api/ApiClient';
 
 export default function LoginComponent(){
@@ -39,43 +39,80 @@ export default function LoginComponent(){
     // }
     // }
 
-    async function authenticate(){
+//     async function authenticate(){
 
-        const token = 'Basic '+window.btoa(username + ":"+password);
+//         const token = 'Basic '+window.btoa(username + ":"+password);
 
-      try{
-        const response =  await  executeBasicAuth(token)
-        if(response.status == 200){
+//       try{
+//         const response =  await  executeBasicAuth(token)
+//         if(response.status == 200){
 
-                setError(false);
-                navigate(`/welcome/${username}`);
-                authContext.setAuthenticated(true); 
-                authContext.setToken(token)
-                authContext.setUsername(username);
-                apiClient.interceptors.request.use(
-                    (config)=>{
-                        console.log("Intercepting");
-                        config.headers.Authorization = token
-                        return config
-                    }
-                )
-
+//                 setError(false);
+//                 navigate(`/welcome/${username}`);
+//                 authContext.setAuthenticated(true); 
+//                 authContext.setToken(token)
+//                 authContext.setUsername(username);
                 
-        }else{
-            setError(true); 
+//                 apiClient.interceptors.request.use(
+//                     (config)=>{
+//                         console.log("Intercepting");
+//                         config.headers.Authorization = token
+//                         return config
+//                     }
+//                 )
+//                 {
+// }  
+//         }else{
+//             setError(true); 
           
-            authContext.setAuthenticated(false);
-            authContext.setUsername(null);
-            authContext.setToken(null)
-        }
-    }catch(error){
-        setError(true);
+//             authContext.setAuthenticated(false);
+//             authContext.setUsername(null);
+//             authContext.setToken(null)
+//         }
+//     }catch(error){
+//         setError(true);
+//         authContext.setAuthenticated(false);
+//         authContext.setUsername(null);
+//         authContext.setToken(null)
+//     }
+//         }
+
+//now authenticate using jwt
+async function authenticate(){
+  try{
+    const response =  await  executeJwtAuth(username,password)
+    const token = "Bearer "+ response.data.token
+    
+    if(response.status == 200){
+
+            setError(false);
+            navigate(`/welcome/${username}`);
+            authContext.setAuthenticated(true); 
+            authContext.setToken(token)
+            authContext.setUsername(username);
+            
+            apiClient.interceptors.request.use(
+                (config)=>{
+                    console.log("Intercepting");
+                    config.headers.Authorization = token
+                    return config
+                }
+            )
+            {
+}  
+    }else{
+        setError(true); 
         authContext.setAuthenticated(false);
         authContext.setUsername(null);
         authContext.setToken(null)
     }
-        }
-
+}catch(error){
+    setError(true);
+    authContext.setAuthenticated(false);
+    authContext.setUsername(null);
+    authContext.setToken(null)
+}
+    }
 
 
     return(
