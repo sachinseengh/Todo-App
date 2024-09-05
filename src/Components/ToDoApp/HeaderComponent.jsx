@@ -12,7 +12,7 @@ export default function HeaderComponent() {
         <>
             <div className="container my-3">
                 <nav className="navbar navbar-expand-md navbar-light bg-light mb-3 p-1">
-                    <Link className="navbar-brand m-1" to="/">ToDo</Link>
+                    <Link className="navbar-brand m-1" to="/">ToDo-List</Link>
                     <div className="collapse navbar-collapse">
                         <ul className="navbar-nav">
                             {authenticated && <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>}
